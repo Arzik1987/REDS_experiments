@@ -8,7 +8,7 @@ All these files will be in open access after the paper acceptance.
 
 ## Important note
 
-Anonymization poses the limit on the maximal file size. Because of this, we do not upload the complete DSGC data (one of 33 datasets we used in the study). For this data we only upload the lables; and we use code to generate the inputs. Due to the use of seed it is very likely that the data produced with this code will coincide with the one used in our experiments, but we do not guarantee that. In other words, there is a (small) probability that the results for "dsgc" dataset will be random and should be ignored in this case. The results for the other 32 DGP are fully reproducible.
+Anonymization poses the limit on the maximal file size. Because of this, we do not upload the complete DSGC data (one of 33 datasets we used in the study). For this data we only upload the lables; and we use code to generate the inputs. Due to the use of seed it is very likely that the data produced with this code will coincide with the one used in our experiments, but we do not guarantee that. In other words, there is a (small) probability that the results for "dsgc" dataset will be random and should be ignored in this case. The results for the other 32 DGPs are fully reproducible.
 
 This problem will not occur after the paper acceptance, since we will share the complete "dsgc" dataset.
 
@@ -48,7 +48,7 @@ To repeat our experiments in each folder open the file ".RProj" and open all fil
 The results will appear in the folder "plots_tables"
 
 0. generate "dsgc" data by excecuting "generate_dsgc.R"
-1. To obtain Figure2, excecute "small data.R"
+1. To obtain Figure 2, excecute "small data.R"
 2. To obtain column "share" of Table 7, execute "dgp_analysis.R"
 3. To obtain Figures 5-13 and Tables 2-6, 9-12 execute **sequentially** 
 	* "do_experiments.R" (takes ~24 hours on 4 cores)
