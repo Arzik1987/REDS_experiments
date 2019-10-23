@@ -166,7 +166,7 @@ p <- ggplot(d, aes(x = mu, fill = method)) +
         # legend.position="none",
         axis.title.x = element_blank())
 
-ggsave(paste0(getwd(), "/hist_bv.pdf"), plot = p, device = cairo_pdf, width = 3, height = 0.9)
+ggsave(paste0(getwd(), "/Fig_11.pdf"), plot = p, device = cairo_pdf, width = 3, height = 0.9)
 
 
 

@@ -5,9 +5,7 @@ library(RColorBrewer)
 library(data.table)
 library(batchtools)
 
-dir.create(file.path(getwd(), "plots_tables/main_pics"), showWarnings = FALSE)
-dir.create(file.path(getwd(), "plots_tables/main_tex"), showWarnings = FALSE)
-dir.create(file.path(getwd(), "plots_tables/appendix"), showWarnings = FALSE)
+dir.create(file.path(getwd(), "plots_tables"), showWarnings = FALSE)
 
 load(paste0(getwd(),"/results/res.RData"))
 load(paste0(getwd(),"/results/res_f.RData"))
@@ -54,7 +52,7 @@ plot.dgpwize <- function(d, np, coef = 100, lbl = "AUC"){
   
   p
 }
-nms <- c("auc_train", "prec_train", "interp", "consist_train")
+nms <- c("4", "5", "6", "7")
 
 for(i in 1:4){
   
@@ -65,7 +63,7 @@ for(i in 1:4){
   if(i == 4) lbl = "consistency"
   
   p <- plot.dgpwize(res, np = 400, coef = coef, lbl = lbl)
-  ggsave(paste0(getwd(), "/plots_tables/main_pics/", nms[i], "_400.pdf"), 
+  ggsave(paste0(getwd(), "/plots_tables/Fig_", nms[i], ".pdf"), 
          plot = p, device = cairo_pdf, width = 3, height = 1.1)
   
 }
@@ -101,7 +99,7 @@ plot.curves <- function(d, f = 0.2){
 
 p <- plot.curves(peeling)
 
-ggsave(paste0(getwd(), "/plots_tables/main_pics/lowess_DSGC_400.pdf"), 
+ggsave(paste0(getwd(), "/plots_tables/Fig_8.pdf"), 
        plot = p, device = cairo_pdf, width = 3, height = 1.3)
 
 
@@ -149,7 +147,7 @@ plot.dsgc.boxes <- function(d){
 
 tmp <- plot.dsgc.boxes(res.f)
 
-ggsave(paste0(getwd(), "/plots_tables/main_pics/DSGC_400.pdf"), 
+ggsave(paste0(getwd(), "/plots_tables/Fig_14.pdf"), 
        plot = grid.arrange(
          grobs = tmp,
          layout_matrix = rbind(1, 2, 3)
@@ -209,7 +207,7 @@ plot.dsgc.np <- function(d){
 
 tmp <- plot.dsgc.np(res)
 
-ggsave(paste0(getwd(), "/plots_tables/main_pics/DSGC_npts.pdf"), 
+ggsave(paste0(getwd(), "/plots_tables/Fig_9.pdf"), 
        plot = grid.arrange(
          grobs = tmp,
          heights = c(1.1, 1, 1.15),
@@ -273,7 +271,7 @@ plot.dsgc.ngen <- function(d){
 
 tmp <- plot.dsgc.ngen(res)
 
-ggsave(paste0(getwd(), "/plots_tables/main_pics/DSGC_ngen.pdf"), 
+ggsave(paste0(getwd(), "/plots_tables/Fig_10.pdf"), 
        plot = grid.arrange(
          grobs = tmp,
          heights = c(1, 1),
@@ -317,7 +315,7 @@ plot.dsgc.noise <- function(d){
 
 tmp <- plot.dsgc.noise(res)
 
-ggsave(paste0(getwd(), "/plots_tables/main_pics/DSGC_noise.pdf"), 
+ggsave(paste0(getwd(), "/plots_tables/Fig_15.pdf"), 
        plot = grid.arrange(
          grobs = tmp,
          heights = c(1, 1),
@@ -331,7 +329,7 @@ ggsave(paste0(getwd(), "/plots_tables/main_pics/DSGC_noise.pdf"),
 #####           #########
 #########################
 
-get.mask <- function(d, best = "max", np = c(400, 800, 1600), value = "auc", 
+get.mask <- function(d, best = "max", np = c(400, 800, 1600), value = "auc", nm = NULL,
                      coef = 100, rn = 1, addvol = FALSE, add.dim = FALSE, d.dim){
   
   d <- d[npts %in% np & (is.na(noise) | noise == 0) & (is.na(ngen) | ngen == 100000),]
@@ -391,7 +389,12 @@ get.mask <- function(d, best = "max", np = c(400, 800, 1600), value = "auc",
     stabs[[1]] <- rbind(stabs[[1]], stabs[[j]])
     res.excel <- cbind(res.excel, tmp[,, j]) 
   }
-  write.csv(res.excel, paste0(getwd(), "/plots_tables/appendix/", value, "_tabs.csv"))
+  
+  if(addvol){
+    res.excel <- rbind(res.excel, tabs[[1]][nrow(tabs[[1]]),])
+    row.names(res.excel)[length(row.names(res.excel))] <- "avg box vol."
+  }
+  write.csv(res.excel, paste0(getwd(), "/plots_tables/Tab_", value, ".csv"))
   
   if(add.dim){
     n = nrow(tabs[[1]]) - nrow(d.dim)
@@ -402,16 +405,16 @@ get.mask <- function(d, best = "max", np = c(400, 800, 1600), value = "auc",
     row.names(tabs[[1]]) <- rnames
   }
 
-  write.table(tabs[[1]], paste0(getwd(), "/plots_tables/appendix/", value, "_tabs.txt"), 
-              quote = FALSE, eol = "\\\\\n", sep = " & ", row.names = TRUE)
-  write.table(stabs[[1]], paste0(getwd(), "/plots_tables/main_tex/", value, "_stabs.txt"), 
+  # write.table(tabs[[1]], paste0(getwd(), "/plots_tables/Table_", value, ".txt"), 
+  #             quote = FALSE, eol = "\\\\\n", sep = " & ", row.names = TRUE)
+  write.table(stabs[[1]], paste0(getwd(), "/plots_tables/Tabs_", nm, ".txt"), 
               quote = FALSE, eol = "\\\\\n", sep = " & ", row.names = FALSE)
 }
 
-get.mask(res, best = "max", value = "auc", coef = 100, rn = 1, addvol = FALSE)
-get.mask(res, best = "max", value = "dens", coef = 100, rn = 1, addvol = FALSE)
-get.mask(res, best = "min", value = "interp", coef = 1, rn = 2, addvol = FALSE, add.dim = TRUE, d.dim = d.dim)
-get.mask(res, best = "max", value = "consist", coef = 100, rn = 1, addvol = TRUE)
+get.mask(res, best = "max", value = "auc", nm = "2_9", coef = 100, rn = 1, addvol = FALSE)
+get.mask(res, best = "max", value = "dens", nm = "3_10", coef = 100, rn = 1, addvol = FALSE)
+get.mask(res, best = "min", value = "interp", nm = "4_11", coef = 1, rn = 2, addvol = FALSE, add.dim = TRUE, d.dim = d.dim)
+get.mask(res, best = "max", value = "consist", nm = "5_12", coef = 100, rn = 1, addvol = TRUE)
 
 
 #### restricted dimensions
@@ -426,6 +429,6 @@ d[dim.r < 0, dim.r := 0]
 d <- d[, .(restricted = mean(dim.r)), by = c("npts", "algorithm")]
 d <- round(cast(d, npts ~ algorithm, value = "restricted"), 2)
 colnames(d)[1] <- "\\lvert d\\rvert"
-write.table(d, paste0(getwd(), "/plots_tables/main_tex/iir_dim.txt"), 
+write.table(d, paste0(getwd(), "/plots_tables/Tab_6.txt"), 
             quote = FALSE, eol = "\\\\\n", sep = " & ", row.names = FALSE)
 
