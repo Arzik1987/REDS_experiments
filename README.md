@@ -3,7 +3,7 @@
 ### Folder Structure
 
 This folder contains the supplementary code for the paper "REDS: Rule Extraction for Discovering Scenarios". Namely,
-1. package "primre_0.11.tar.gz" containing implementation of our method and competing ones, as well as the functions for testing;
+1. package "primre_0.11.tar.gz" containing the implementation of our method and competing ones, as well as the functions for testing;
 2. folder "Experiments" containing the code and data (dsgc) for reproducing all experiments featured in the paper, except those with mean squared error (MSE);
 3. folder "Experiments_bv" containing the code to reproduce experiments with MSE.
 
@@ -28,21 +28,20 @@ For producing the plots we additionally used:
 
 ### How to install and execute the code
 
-The rest of description assumes that you use RStudio (https://www.rstudio.com/).
-Any of the above packages can be installed with the command
+The rest of the description assumes that one uses RStudio (https://www.rstudio.com/). Any of the above packages can be installed with the command
 `install.packages("<package-name>")`
 
-To install our package execute
+To install our package, execute
 `install.packages("<path-to-file>", repos = NULL, type = "source")`
 
-To repeat our experiments in each folder open the file ".RProj" and open all files ".R" from that folder. To launch part of code, select it and press "Ctrl + Enter".
+To repeat our experiments in each folder, open the file ".RProj" and open all files ".R" from that folder. To launch part of code, select it and press "Ctrl + Enter".
 
 ### The folder "Experiments"
 
 The results will appear in the folder "plots_tables"
 
 1. To obtain Figure 12 from Section B.2, execute "small data.R"
-2. To obtain column "share" of Table 8 from Section C, execute "dgp_analysis.R"
+2. To obtain the column "share" of Table 8 from Section C, execute "dgp_analysis.R"
 3. To obtain Figures 4-10 and Tables 2-6 from Section 8, Figures 14, 15 and Tables 9-12 from Section D, and the following tables presented and described below in this README, execute **sequentially** 
 	* "do_experiments.R" (takes ~24 hours on 4 cores)
 	* "analyze_experiments.R" (several minutes) and
@@ -50,20 +49,13 @@ The results will appear in the folder "plots_tables"
 
 ### The folder "Experiments_bv"
 
-To obtain numbers and the Figure 11 from Section B, execute **sequentially** 
+To obtain numbers and Figure 11 from Section B, execute **sequentially** 
 * "do_experiments.R" and
 * "analyze_experiments.R" 
 
 ## Detailed experimental results
 
-The following tables contain the detailed results for AUC, density,
-number of restricted dimensions and consistency. See the paper for the detailed description of these metrics. For each function the
-number of corresponding metric is averaged over 50 runs. For each
-dataset size |d| and each function the number of best performing
-approach is in bold; for the second best approach the number is
-in italic. The columns ‘D’ and ‘I’ in tabes reporting the number of restricted dimensions are the same as in Table 8 of the supplementary material.
-Finally, the last row in tables reporting consistency is the average volume of the last
-box produced with each method, relative to the initial box size.
+The following tables contain the detailed results for AUC, density, number of restricted dimensions and consistency. See the paper for the detailed description of these metrics. For each function, the figure for the corresponding metric is averaged over 50 runs. For each dataset size |d| and each function the figure for best performing approach is in bold; for the second-best approach, the number is in italic. The columns 'D' and 'I' in tabes reporting the number of restricted dimensions are the same as in Table 8 of the supplementary material. Finally, the last row in tables reporting consistency is the average volume of the last box produced with each method, relative to the initial box size.
 
 ### AUC
 #### |d|=400
