@@ -39,9 +39,9 @@ To repeat our experiments in each folder, open the file ".RProj" and open all fi
 
 The results will appear in the folder "plots_tables"
 
-To obtain Figures 4-10 and Tables 3-4, execute **sequentially** 
-	* "do_experiments.R" (takes ~48 hours on 16 cores)
-	* "analyze_experiments.R" (~30 minutes on 1 core) and
-	* "plots_and_tables.R" (~2 minutes on 1 core)
+To obtain Figures 4-10 and Tables 3-4, execute sequentially 
+* "do_experiments.R" (takes ~48 hours on 16 cores)
+* "analyze_experiments.R" (~30 minutes on 1 core) and
+* "plots_and_tables.R" (~2 minutes on 1 core)
 
 To obtain Table 2, execute "dgp_analysis.R" 
