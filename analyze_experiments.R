@@ -103,7 +103,7 @@ get.metrics <- function(reg, metric = "auc", pars){
   tmp2$algorithm <- "REDSl"
 
   cat('\r',"3/6", '\n')
-  ids <- pars[problem == "dsgc" & grepl("BI", algorithm), job.id]
+  ids <- pars[problem == "dsgc" & (grepl("BI", algorithm) | algorithm == "REDS"), job.id]
   results = unwrap(reduceResultsDataTable(ids = ids, fun = reduce3))
   tmp3 = ijoin(pars, results)
   
@@ -121,7 +121,7 @@ get.metrics <- function(reg, metric = "auc", pars){
   tmp5$algorithm <- "REDSl"
   
   cat('\r',"6/6", '\n')
-  ids <- pars[problem != "dsgc" & grepl("BI", algorithm), job.id]
+  ids <- pars[problem != "dsgc" & (grepl("BI", algorithm) | algorithm == "REDS"), job.id]
   results = unwrap(reduceResultsDataTable(ids = ids, fun = reduce6))
   tmp6 = ijoin(pars, results)
 
@@ -143,7 +143,7 @@ get.consist <- function(ids, k = 3, pars){
   boxes <- list()
   for(i in 1:length(ids)){
     res <- loadResult(ids[i])
-    if(grepl("BI", alg)){
+    if(grepl("BI", alg) | alg == "REDS"){
       boxes[[i]] <- res$box
     } else {
       boxes[[i]] <- res[[k]][[length(res[[k]])]]

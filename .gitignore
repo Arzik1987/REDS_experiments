@@ -1,4 +1,6 @@
 .Rproj.user
 .Rhistory
 .RData
+**/plots_tables
+**/results
 **/registry
