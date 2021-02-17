@@ -1,4 +1,4 @@
-library(primre)
+library(reds)
 
 #### -1- ####
 
@@ -40,3 +40,23 @@ avgs <- c(avgs, mean(d[[2]][ ,13]))
 d <- cbind(c(dgps, "dsgc"), avgs)
 colnames(d) <- c("function", "share")
 write.csv(d, paste0(getwd(), "/plots_tables/Tab_8_shares.csv"), row.names = FALSE)
+
+
+
+
+for(dgp in dgps){
+  d <- get.labs.box(box = NULL, n.points = 10000, dgp = dgp, distr = "discr")
+  avgs <- c(avgs, mean(d[[2]]))
+  cat(paste0(dgp, " "))
+  cat(mean(d[[2]]))
+  cat("\n")
+}
+
+
+for(dgp in dgps){
+  d <- get.labs.box(box = NULL, n.points = 10000, dgp = dgp, distr = "logitnorm")
+  avgs <- c(avgs, mean(d[[2]]))
+  cat(paste0(dgp, " "))
+  cat(mean(d[[2]]))
+  cat("\n")
+}

@@ -15,8 +15,8 @@ dir.create(file.path(getwd(), "plots_tables"), showWarnings = FALSE)
 
 load(paste0(getwd(),"/results/res.RData"))
 load(paste0(getwd(),"/results/res_f.RData"))
-load(paste0(getwd(),"/results/peeling_dsgc.RData"))
-load(paste0(getwd(),"/results/peeling_morris.RData"))
+# load(paste0(getwd(),"/results/peeling_dsgc.RData"))
+# load(paste0(getwd(),"/results/peeling_morris.RData"))
 load(paste0(getwd(),"/dim.RData"))
 
 res.fact <- function(d){
@@ -28,8 +28,8 @@ res.fact <- function(d){
 
 res <- res.fact(res)
 res.f <- res.fact(res.f)
-peeling.dsgc <- res.fact(peeling.dsgc)
-peeling.morris <- res.fact(peeling.morris)
+# peeling.dsgc <- res.fact(peeling.dsgc)
+# peeling.morris <- res.fact(peeling.morris)
 
 
 
@@ -91,7 +91,7 @@ plot.boxes.dgp <- function(d, dg = "morris"){
     theme_light(base_size = bs) +
     theme(legend.position = "none", 
           axis.title.x = element_blank(),
-          axis.title.y = element_text(size = bs - 1),
+          axis.title.y = element_text(size = bs - 2),
           plot.margin = unit(c(0.05,0,0.01,0.01), "cm"),
           panel.grid.minor = element_blank(),
           panel.grid.major.x = element_blank()) +
@@ -100,9 +100,9 @@ plot.boxes.dgp <- function(d, dg = "morris"){
   p
 }
 
-p <- plot.boxes.dgp(res.f[(distr == "laths" | is.na(distr))], dg = "morris")
+p <- plot.boxes.dgp(res.f[distr == "laths"], dg = "morris")
 ggsave(paste0(getwd(), "/plots_tables/Fig_demo.pdf"), 
-       plot = p, device = cairo_pdf, width = 2.1, height = 0.84)
+       plot = p, device = cairo_pdf, width = 2, height = 0.8)
 
 
 
@@ -194,26 +194,26 @@ plot.dgpwize <- function(d, np, coef = 100, lbl = "auc"){
   p
 }
 
-d <- get.ratios(res[algorithm %in% c("P", "Pc", "PB", "PBc", "RPf", "RPx", "RPs") & (distr == "laths" | is.na(distr)),], 
+d <- get.ratios(res[algorithm %in% c("P", "Pc", "PB", "PBc", "RPf", "RPx", "RPs") & distr == "laths",], 
                 np = 400, bsln = "Pc")
 
 for(lbl in c("auc", "prec", "restr", "cons")){
   p <- plot.dgpwize(d, np = 400, coef = 100, lbl = lbl)
   ggsave(paste0(getwd(), "/plots_tables/Fig_P_", lbl, ".pdf"), 
-         plot = p, device = cairo_pdf, width = 2.7, height = 1)
+         plot = p, device = cairo_pdf, width = 2.5, height = 0.9)
 }
 
-d <- get.ratios(res[algorithm %in% c("BI", "BIc", "RBIcxp") & (distr == "laths" | is.na(distr)),], 
+d <- get.ratios(res[algorithm %in% c("BI", "BIc", "RBIcxp") & distr == "laths",], 
                 np = 400, bsln = "BIc")
 
 for(lbl in c("WRAcc", "cons")){
   p <- plot.dgpwize(d, np = 400, coef = 100, lbl = lbl)
   ggsave(paste0(getwd(), "/plots_tables/Fig_BI_", lbl, ".pdf"), 
-         plot = p, device = cairo_pdf, width = 0.95, height = 0.75)
+         plot = p, device = cairo_pdf, width = 0.9, height = 0.7)
 }
 p <- plot.dgpwize(d, np = 400, coef = 100, lbl = "restr")
 ggsave(paste0(getwd(), "/plots_tables/Fig_BI_", "restr", ".pdf"),
-       plot = p, device = cairo_pdf, width = 1.05, height = 0.75)
+       plot = p, device = cairo_pdf, width = 0.99, height = 0.7)
 
 
 
@@ -221,21 +221,21 @@ ggsave(paste0(getwd(), "/plots_tables/Fig_BI_", "restr", ".pdf"),
 #### discr
 
 d <- get.ratios(res[algorithm %in% c("Pc", "PBc", "RPcxp") & distr == "discr",], 
-                np = 400, bsln = "PBc")
+                np = 400, bsln = "Pc")
 
-for(lbl in c("auc", "prec")){
+for(lbl in c("auc", "prec", "restr")){
   p <- plot.dgpwize(d, np = 400, coef = 100, lbl = lbl)
   ggsave(paste0(getwd(), "/plots_tables/Fig_P_", lbl, "_discr.pdf"), 
-         plot = p, device = cairo_pdf, width = 0.9, height = 0.7)
+         plot = p, device = cairo_pdf, width = 0.95, height = 0.75)
 }
 
 d <- get.ratios(res[algorithm %in% c("BI", "BIc", "RBIcxp") & distr == "discr",], 
                 np = 400, bsln = "BIc")
 
-for(lbl in c("WRAcc")){
+for(lbl in c("WRAcc", "restr")){
   p <- plot.dgpwize(d, np = 400, coef = 100, lbl = lbl)
   ggsave(paste0(getwd(), "/plots_tables/Fig_BI_", lbl, "_discr.pdf"), 
-         plot = p, device = cairo_pdf, width = 0.9, height = 0.7)
+         plot = p, device = cairo_pdf, width = 0.95, height = 0.75)
 }
 
 
@@ -246,19 +246,19 @@ for(lbl in c("WRAcc")){
 d <- get.ratios(res[algorithm %in% c("Pc", "PBc", "RPx") & distr == "logitnorm",], 
                 np = 400, bsln = "Pc")
 
-for(lbl in c("auc", "prec")){
+for(lbl in c("auc", "prec", "restr", "cons")){
   p <- plot.dgpwize(d, np = 400, coef = 100, lbl = lbl)
   ggsave(paste0(getwd(), "/plots_tables/Fig_P_", lbl, "_ssl.pdf"), 
-         plot = p, device = cairo_pdf, width = 0.9, height = 0.7)
+         plot = p, device = cairo_pdf, width = 0.95, height = 0.75)
 }
 
 d <- get.ratios(res[algorithm %in% c("BI", "BIc", "RBIcxp") & distr == "logitnorm",], 
                 np = 400, bsln = "BIc")
 
-for(lbl in c("WRAcc")){
+for(lbl in c("WRAcc", "restr", "cons")){
   p <- plot.dgpwize(d, np = 400, coef = 100, lbl = lbl)
   ggsave(paste0(getwd(), "/plots_tables/Fig_BI_", lbl, "_ssl.pdf"), 
-         plot = p, device = cairo_pdf, width = 0.9, height = 0.7)
+         plot = p, device = cairo_pdf, width = 0.95, height = 0.75)
 }
 
 
@@ -283,7 +283,7 @@ plot.rt <- function(d, yl = TRUE){
   } else {
     cols <- cols[c(1, 2, 8)]
   }
-  bs = 9
+  bs = 8
   
   d$npts <- as.character(d$npts)
   p <- ggplot(d, aes(x = npts, y = value, fill = algorithm)) + 
@@ -291,15 +291,14 @@ plot.rt <- function(d, yl = TRUE){
     scale_fill_manual("", values = cols) + 
     theme_light(base_size = bs) +
     theme(legend.position = c(0.5, 1.1),
-          legend.text = element_text(size = bs - 1),
+          legend.text = element_text(size = bs - 2),
           legend.key.size = unit(0.2, 'cm'),
           legend.spacing.x = unit(0.1, 'cm'),
           legend.background = element_rect(fill = NA),
           axis.title.x = element_text(size = bs - 1),
-          axis.title.y = element_text(size = bs - 1),
           panel.grid.minor = element_blank(),
           panel.grid.major.x = element_blank(),
-          plot.margin = unit(c(0.28,0,0,0), "cm")) +
+          plot.margin = unit(c(0.25,0,0,0), "cm")) +
     guides(fill = guide_legend(direction = "horizontal")) +
     xlab("N")
   
@@ -312,20 +311,20 @@ plot.rt <- function(d, yl = TRUE){
 
 d <- res[algorithm %in% c("PBc", "Pc", "RPx", "RPf") 
          & npts <= 800 & (is.na(ngen) | ngen == 100000) 
-         & (distr == "laths" | is.na(distr)),]
+         & distr == "laths",]
 p <- plot.rt(d)
 
 ggsave(paste0(getwd(), "/plots_tables/runtime_P_lath.pdf"), 
-       plot = p, device = cairo_pdf, width = 1.75, height = 1)
+       plot = p, device = cairo_pdf, width = 1.7, height = 0.9)
 
 
 d <- res[algorithm %in% c("BI", "BIc", "RBIcxp") 
          & npts <= 800 & (is.na(ngen) | ngen == 10000) 
-         & (distr == "laths" | is.na(distr)),]
+         & distr == "laths",]
 p <- plot.rt(d, yl = FALSE)
 
 ggsave(paste0(getwd(), "/plots_tables/runtime_BI_lath.pdf"), 
-       plot = p, device = cairo_pdf, width = 1.45, height = 1)
+       plot = p, device = cairo_pdf, width = 1.4, height = 0.9)
 
 
 
@@ -344,17 +343,17 @@ plot.curves <- function(d, f = 0.4, coly = "black"){
   
   cols <- brewer.pal(9, "Paired")
   cols <- cols[c(1,2,7)]
-  bs = 9
+  bs = 8
   
   p <- ggplot(d, aes(x = recall, y = precision, col = algorithm, linetype = algorithm)) +
-    geom_line(size = 0.5) +
+    geom_line(size = 0.3) +
     scale_color_manual("", values = cols) +
     scale_linetype_manual("", values = c(1, 2, 3)) +
     theme_light(base_size = bs) +
     theme(legend.position = c(0.5, 1.15),
-          legend.text = element_text(size = bs - 1),
+          legend.text = element_text(size = bs - 2),
           legend.spacing.x = unit(0.1, 'cm'),
-          legend.key.size = unit(0.35, 'cm'),
+          legend.key.size = unit(0.15, 'cm'),
           legend.background = element_rect(fill = NA),
           legend.title = element_blank(),
           legend.key = element_rect(fill = NA, color = NA),
@@ -412,7 +411,7 @@ plot.boxes <- function(d, np = 400, lbl, coef = 100){
   
   cols <- brewer.pal(9, "Paired")
   cols <- cols[c(1, 2, 7)]
-  bs = 9
+  bs = 8
   
   p <- ggplot(d, aes(x = variable, y = value, col = variable)) +
     geom_quasirandom(size = 0.8, varwidth = TRUE, shape = d$sh) +
@@ -434,21 +433,18 @@ plot.boxes <- function(d, np = 400, lbl, coef = 100){
 
 lbl = "auc"
 p <- plot.boxes(res.f[algorithm %in% c("P", "Pc", "RPx") 
-                      & (distr == "laths" | is.na(distr)),], lbl = lbl)
+                      & distr == "laths",], lbl = lbl)
 ggsave(paste0(getwd(), "/plots_tables/Fig_morris_", lbl, ".pdf"), 
        plot = p, device = cairo_pdf, width = 1.5, height = 0.9)
 
 
 lbl = "WRAcc"
 p <- plot.boxes(res.f[algorithm %in% c("BI", "BIc", "RBIcxp") 
-                      & (distr == "laths" | is.na(distr)),], lbl = lbl)
+                      & distr == "laths",], lbl = lbl)
 ggsave(paste0(getwd(), "/plots_tables/Fig_morris_", lbl, ".pdf"), 
        plot = p, device = cairo_pdf, width = 1.5, height = 0.9)
 
 
-tmp <- res.f[algorithm %in% c("Pc", "RPx") & npts == 400 & 
-        (is.na(ngen) | ngen == 100000 | ngen == 10000) & dgp == "morris"]
-wilcox.test(auc ~ algorithm, data = tmp)
 
 
 
@@ -484,18 +480,19 @@ plot.np <- function(d, lbl, fn, err = TRUE, nm = fn){
     cols <- cols[c(1, 2, 7, 8)]
     ltys <- c(1, 1, 3, 3)
   }
+  bs = 9
   
   preproc2 <- function(x){
-    x[variable == "BI" & (npts %in% c(400, 1600)), value := NA]
-    x[variable == "BI5" & (npts %in% c(400, 1600)), value := NA]
-    x[variable == "BIc" & (npts %in% c(200, 800, 3200)), value := NA]
-    x[variable == "P" & (npts %in% c(200, 800, 3200)), value := NA]
-    x[variable == "PB" & (npts %in% c(200, 800, 3200)), value := NA]
-    x[variable == "Pc" & (npts %in% c(400, 1600)), value := NA]
-    x[variable == "PBc" & (npts %in% c(200, 800, 3200)), value := NA]
-    x[variable == "PP" & (npts %in% c(200, 800, 3200)), value := NA]
-    x[variable == "RPx" & (npts %in% c(200, 800, 3200)), value := NA]
-    x[variable == "RPxp" & (npts %in% c(400, 1600)), value := NA]
+    x[algorithm == "BI" & (npts %in% c(400, 1600)), value := NA]
+    x[algorithm == "BI5" & (npts %in% c(400, 1600)), value := NA]
+    x[algorithm == "BIc" & (npts %in% c(200, 800, 3200)), value := NA]
+    x[algorithm == "P" & (npts %in% c(200, 800, 3200)), value := NA]
+    x[algorithm == "PB" & (npts %in% c(200, 800, 3200)), value := NA]
+    x[algorithm == "Pc" & (npts %in% c(400, 1600)), value := NA]
+    x[algorithm == "PBc" & (npts %in% c(200, 800, 3200)), value := NA]
+    x[algorithm == "PP" & (npts %in% c(200, 800, 3200)), value := NA]
+    x[algorithm == "RPx" & (npts %in% c(200, 800, 3200)), value := NA]
+    x[algorithm == "RPxp" & (npts %in% c(400, 1600)), value := NA]
     x
   }
   
@@ -508,19 +505,20 @@ plot.np <- function(d, lbl, fn, err = TRUE, nm = fn){
   names(tmp3)[names(tmp3) == "value"] = "high"
   d <- merge(merge(tmp1, tmp2), tmp3)
   
-  bs = 9
-  npts = sort(unique(d$npts))
+  d$algorithm <- factor(d$algorithm, levels = c("P", "Pc", "PP", "PB", "PBc", "RPf", 
+                                              "RPfp", "RPx", "RPxp", "RPs", "RPsp",
+                                              "BI", "BIc", "BI5", "RBIcfp", "RBIcxp"), ordered = TRUE)
   
-  p <- ggplot(d, aes(x = npts, y = value, col = variable, linetype = variable)) +
-    geom_line(size = 0.5) +
+  p <- ggplot(d, aes(x = npts, y = value, col = algorithm, linetype = algorithm)) +
+    geom_line(size = 0.4) +
     scale_color_manual("", values = cols) +
-    scale_x_continuous(breaks = npts, labels = npts/1000, trans = "log2") +
+    scale_x_continuous(breaks = ng, labels = ngl, trans = "log2") +
     scale_linetype_manual("", values = ltys) +
     theme_light(base_size = bs) +
     theme(
       legend.position = c(0.5, 0.9),
       legend.title = element_blank(),
-      legend.text = element_text(size = bs - 1),
+      legend.text = element_text(size = bs - 2),
       legend.key = element_rect(fill = NA, color = NA),
       legend.background = element_rect(fill = NA),
       legend.spacing.x = unit(0.1, 'cm'),
@@ -534,7 +532,7 @@ plot.np <- function(d, lbl, fn, err = TRUE, nm = fn){
     ylab(lbl) +
     xlab("N, thousands")
   
-  if(err) p = p + geom_errorbar(aes(ymin = low, ymax = high), linetype = 1, width = 0.2, lwd = 0.3)
+  if(err) p = p + geom_errorbar(aes(ymin = low, ymax = high), linetype = 1, width = 0.2, lwd = 0.2)
   
   p
 }
@@ -542,7 +540,7 @@ plot.np <- function(d, lbl, fn, err = TRUE, nm = fn){
 
 
 plot.ngen <- function(d, lbl, fn, np = 400, err = TRUE, nm = fn){
-  d <- d[dgp == fn & npts == np & (is.na(d$ngen) | d$ngen != 100000),]
+  d <- d[dgp == fn & npts == np & (is.na(ngen) | ngen != 100000),]
   d[is.na(d$ngen), ngen := 200]
   ng <- unique(d$ngen)
   ngl <- ng/1000
@@ -610,9 +608,13 @@ plot.ngen <- function(d, lbl, fn, np = 400, err = TRUE, nm = fn){
   tmp3 <- preproc2(tmp3)
   names(tmp3)[names(tmp3) == "value"] = "high"
   d <- merge(merge(tmp1, tmp2), tmp3)
+
+  d$variable <- factor(d$variable, levels = c("P", "Pc", "PP", "PB", "PBc", "RPf", 
+                                              "RPfp", "RPx", "RPxp", "RPs", "RPsp",
+                                              "BI", "BIc", "BI5", "RBIcfp", "RBIcxp"), ordered = TRUE)
   
   p <- ggplot(d, aes(x = ngen, y = value, col = variable, linetype = variable)) +
-    geom_line(size = 0.5) +
+    geom_line(size = 0.4) +
     scale_color_manual("", values = cols) +
     scale_x_continuous(breaks = ng, labels = ngl, trans = "log2") +
     scale_linetype_manual("", values = ltys) +
@@ -620,7 +622,7 @@ plot.ngen <- function(d, lbl, fn, np = 400, err = TRUE, nm = fn){
     theme(
       legend.position = c(0.5, 0.9),
       legend.title = element_blank(),
-      legend.text = element_text(size = bs - 1),
+      legend.text = element_text(size = bs - 2),
       legend.key = element_rect(fill = NA, color = NA),
       legend.background = element_rect(fill = NA),
       legend.spacing.x = unit(0.1, 'cm'),
@@ -634,36 +636,41 @@ plot.ngen <- function(d, lbl, fn, np = 400, err = TRUE, nm = fn){
     ylab(lbl) +
     xlab("L, thousands")
   
-  if(err) p = p + geom_errorbar(aes(ymin = low, ymax = high), linetype = 1, width = 0.3, lwd = 0.3)
+  if(err) p = p + geom_errorbar(aes(ymin = low, ymax = high), linetype = 1, width = 0.2, lwd = 0.2)
   
   p
 }
 
-d <- res.f[algorithm %in% c("P", "Pc", "RPx", "RPxp") & (distr == "laths" | is.na(distr)),]
-p1 <- plot.np(d, fn = "morris", lbl = "auc", nm = "morris, L=100000")
-p2 <- plot.ngen(d, fn = "morris", lbl = "auc", nm = "morris, N=400")
-mylegend <- g_legend(plot.np(d, fn = "morris", lbl = "auc", err = FALSE))
+
+p1 <- plot.np(res.f[algorithm %in% c("P", "Pc", "RPx", "RPxp"),], 
+              fn = "morris", lbl = "auc", nm = "morris, L=100000")
+p2 <- plot.ngen(res.f[algorithm %in% c("P", "Pc", "RPx", "RPxp"),], 
+                fn = "morris", lbl = "auc", nm = "morris, N=400")
+mylegend <- g_legend(plot.np(res.f[algorithm %in% c("P", "Pc", "RPx", "RPxp"),], 
+                             fn = "morris", lbl = "auc", err = FALSE))
 p3 <- grid.arrange(mylegend,
                    arrangeGrob(p1 + theme(legend.position = "none"),
                                ggplot() + theme_void() + xlab(NULL),
                                p2 + theme(legend.position = "none"),
                                nrow = 1, widths = c(10,1,10)), nrow = 2, heights = c(1, 7))
 ggsave(paste0(getwd(), "/plots_tables/Fig_P_np_ngen.pdf"), 
-       plot = p3, device = cairo_pdf, width = 3.2, height = 1.3)
+       plot = p3, device = cairo_pdf, width = 3.2, height = 1.2)
 
 
 
-d <- res.f[algorithm %in% c("BI", "BIc", "RBIcxp") & (distr == "laths" | is.na(distr)),]
-p1 <- plot.np(d, fn = "morris", lbl = "WRAcc", nm = "morris, L=10000")
-p2 <- plot.ngen(d, fn = "morris", lbl = "WRAcc", nm = "morris, N=400")
-mylegend <- g_legend(plot.np(d, fn = "morris", lbl = "WRAcc", err = FALSE))
+p1 <- plot.np(res.f[algorithm %in% c("BI", "BIc", "RBIcxp"),], 
+              fn = "morris", lbl = "WRAcc", nm = "morris, L=10000")
+p2 <- plot.ngen(res.f[algorithm %in% c("BI", "BIc", "RBIcxp"),], 
+                fn = "morris", lbl = "WRAcc", nm = "morris, N=400")
+mylegend <- g_legend(plot.np(res.f[algorithm %in% c("BI", "BIc", "RBIcxp"),], 
+                             fn = "morris", lbl = "WRAcc", err = FALSE))
 p3 <- grid.arrange(mylegend,
                    arrangeGrob(p1 + theme(legend.position = "none"),
                                ggplot() + theme_void() + xlab(NULL),
                                p2 + theme(legend.position = "none"),
                                nrow = 1, widths = c(10,1,10)), nrow = 2, heights = c(1, 7))
 ggsave(paste0(getwd(), "/plots_tables/Fig_BI_np_ngen.pdf"), 
-       plot = p3, device = cairo_pdf, width = 3.2, height = 1.3)
+       plot = p3, device = cairo_pdf, width = 3.2, height = 1.2)
 
 
 
@@ -775,30 +782,63 @@ get.mask <- function(d, best = "max", np = c(200, 400, 800), value = "auc",
               quote = FALSE, eol = "\\\\\n", sep = " & ", row.names = FALSE)
 }
 
-get.mask(res[(distr == "laths" | is.na(distr)) & algorithm %in% c("P", "Pc", "PB", "PBc", "RPf", "RPx", "RPs"),], 
-         best = "max", value = "auc",  coef = 100, rn = 1, addvol = FALSE, csv = FALSE)
-get.mask(res[(distr == "laths" | is.na(distr)) & algorithm %in% c("P", "Pc", "PB", "PBc", "RPf", "RPx", "RPs"),], 
-         best = "max", value = "prec", coef = 100, rn = 1, addvol = FALSE, csv = FALSE)
-get.mask(res[(distr == "laths" | is.na(distr)) & algorithm %in% c("P", "Pc", "PB", "PBc", "RPf", "RPx", "RPs"),], 
-         best = "min", value = "interp", coef = 1, rn = 2, addvol = FALSE, add.dim = TRUE, d.dim = d.dim, csv = FALSE)
-get.mask(res[(distr == "laths" | is.na(distr)) & algorithm %in% c("P", "Pc", "PB", "PBc", "RPf", "RPx", "RPs"),], 
-         best = "max", value = "consist", coef = 100, rn = 1, addvol = FALSE, csv = FALSE)
+get.mask(res[!(dgp %in% c("morrisd1", "morrisd2", "morristr", "morrisd3")) & algorithm %in% 
+               c("P", "Pc", "PB", "PBc", "RPf", "RPx", "RPs"),], 
+         best = "max", value = "auc",  coef = 100, rn = 1, addvol = FALSE)
+get.mask(res[!(dgp %in% c("morrisd1", "morrisd2", "morristr", "morrisd3")) & algorithm %in% 
+               c("P", "Pc", "PB", "PBc", "RPf", "RPx", "RPs"),], 
+         best = "max", value = "prec", coef = 100, rn = 1, addvol = FALSE)
+get.mask(res[!(dgp %in% c("morrisd1", "morrisd2", "morristr", "morrisd3")) & algorithm %in% 
+               c("P", "Pc", "PB", "PBc", "RPf", "RPx", "RPs"),], 
+         best = "min", value = "interp", coef = 1, rn = 2, addvol = FALSE, add.dim = TRUE, d.dim = d.dim)
+get.mask(res[!(dgp %in% c("morrisd1", "morrisd2", "morristr", "morrisd3")) & algorithm %in% 
+               c("P", "Pc", "PB", "PBc", "RPf", "RPx", "RPs"),], 
+         best = "max", value = "consist", coef = 100, rn = 1, addvol = TRUE)
 
-get.mask(res[(distr == "laths" | is.na(distr)) & algorithm %in% c("BI", "BIc", "BI5", "RBIcfp", "RBIcxp"),], 
-         best = "max", value = "wracc", coef = 100, rn = 1, addvol = FALSE, csv = FALSE)
-get.mask(res[(distr == "laths" | is.na(distr)) & algorithm %in% c("BI", "BIc", "BI5", "RBIcfp", "RBIcxp"),],  
-         best = "min", value = "interp", coef = 1, rn = 2, addvol = FALSE, csv = FALSE, add.dim = TRUE, d.dim = d.dim)
-get.mask(res[(distr == "laths" | is.na(distr)) & algorithm %in% c("BI", "BIc", "BI5", "RBIcfp", "RBIcxp"),], 
-         best = "max", value = "consist", coef = 100, rn = 1, addvol = FALSE, csv = FALSE)
+get.mask(res[!(dgp %in% c("morrisd1", "morrisd2", "morristr", "morrisd3")) & 
+               algorithm %in% c("BI", "BIc", "BI5", "RBIcfp", "RBIcxp"),], 
+         best = "max", value = "wracc", coef = 100, rn = 1, addvol = FALSE)
+get.mask(res[!(dgp %in% c("morrisd1", "morrisd2", "morristr", "morrisd3")) & 
+               algorithm %in% c("BI", "BIc", "BI5", "RBIcfp", "RBIcxp"),],  
+         best = "min", value = "interp", coef = 1, rn = 2, addvol = FALSE, add.dim = TRUE, d.dim = d.dim)
+get.mask(res[!(dgp %in% c("morrisd1", "morrisd2", "morristr", "morrisd3")) & 
+               algorithm %in% c("BI", "BIc", "BI5", "RBIcfp", "RBIcxp"),], 
+         best = "max", value = "consist", coef = 100, rn = 1, addvol = TRUE)
+
+
+
+
+get.mask(res[(dgp %in% c("morrisd1", "morrisd2", "morristr", "morrisd3")) & algorithm %in% 
+               c("P", "Pc", "PB", "PBc", "RPf", "RPx", "RPs"),], 
+         best = "max", value = "auc",  coef = 100, rn = 1, addvol = FALSE, nm = " discr", csv = FALSE)
+get.mask(res[(dgp %in% c("morrisd1", "morrisd2", "morristr", "morrisd3")) & algorithm %in% 
+               c("P", "Pc", "PB", "PBc", "RPf", "RPx", "RPs"),], 
+         best = "max", value = "prec", coef = 100, rn = 1, addvol = FALSE, nm = " discr", csv = FALSE)
+get.mask(res[(dgp %in% c("morrisd1", "morrisd2", "morristr", "morrisd3")) & algorithm %in% 
+               c("P", "Pc", "PB", "PBc", "RPf", "RPx", "RPs"),], 
+         best = "min", value = "interp", coef = 1, rn = 2, addvol = FALSE, nm = " discr", csv = FALSE)
+get.mask(res[(dgp %in% c("morrisd1", "morrisd2", "morristr", "morrisd3")) & algorithm %in% 
+               c("P", "Pc", "PB", "PBc", "RPf", "RPx", "RPs"),], 
+         best = "max", value = "consist", coef = 100, rn = 1, addvol = FALSE, nm = " discr", csv = FALSE)
+
+get.mask(res[(dgp %in% c("morrisd1", "morrisd2", "morristr", "morrisd3")) & 
+               algorithm %in% c("BI", "BIc", "BI5", "RBIcfp", "RBIcxp"),], 
+         best = "max", value = "wracc", coef = 100, rn = 1, addvol = FALSE, nm = " discr", csv = FALSE)
+get.mask(res[(dgp %in% c("morrisd1", "morrisd2", "morristr", "morrisd3")) & 
+               algorithm %in% c("BI", "BIc", "BI5", "RBIcfp", "RBIcxp"),],  
+         best = "min", value = "interp", coef = 1, rn = 2, addvol = FALSE, nm = " discr", csv = FALSE)
+get.mask(res[(dgp %in% c("morrisd1", "morrisd2", "morristr", "morrisd3")) & 
+               algorithm %in% c("BI", "BIc", "BI5", "RBIcfp", "RBIcxp"),], 
+         best = "max", value = "consist", coef = 100, rn = 1, addvol = FALSE, nm = " discr", csv = FALSE)
 
 
 
 #### irrelevant dimensions
 
 d <- d.dim[dim > inf.dim,]
-tmp <- res[npts %in% c(200, 400, 800) & (is.na(ngen) | ngen == 100000) & 
-             algorithm %in% c("P", "Pc", "PB", "PBc", "RPf", "RPx", "RPs") & (distr == "laths" | is.na(distr)),]
-d <- ijoin(d, tmp, by = "dgp")
+d <- ijoin(d, res, by = "dgp")
+d <- d[npts %in% c(200, 400, 800) & (is.na(ngen) | ngen == 100000) & 
+         algorithm %in% c("P", "Pc", "PB", "PBc", "RPf", "RPx", "RPs"),]
 d[, dim.r := m.interp - inf.dim]
 d[dim.r < 0, dim.r := 0]
 
@@ -810,9 +850,9 @@ write.table(d, paste0(getwd(), "/plots_tables/Tabs_P_irrel.txt"),
 
 
 d <- d.dim[dim > inf.dim,]
-tmp <- res[npts %in% c(200, 400, 800) & (is.na(ngen) | ngen == 100000) & 
-             algorithm %in% c("BI", "BIc", "BI5", "RBIcfp", "RBIcxp") & (distr == "laths" | is.na(distr)),]
-d <- ijoin(d, tmp, by = "dgp")
+d <- ijoin(d, res, by = "dgp")
+d <- d[npts %in% c(200, 400, 800) & (is.na(ngen) | ngen == 10000) & 
+         algorithm %in%  c("BI", "BIc", "BI5", "RBIcfp", "RBIcxp"),]
 d[, dim.r := m.interp - inf.dim]
 d[dim.r < 0, dim.r := 0]
 
@@ -825,13 +865,13 @@ write.table(d, paste0(getwd(), "/plots_tables/Tabs_BI_irrel.txt"),
 
 
 
-# #### stats peel alpha (paragraph 7.1)
-# 
-# mean(res[grepl("Pc", algorithm) & npts == 200, m.alpha])
-# mean(res[grepl("Pc", algorithm) & npts == 800, m.alpha])
-# for(i in c(200, 400, 800, 1600, 3200)){
-#   print(mean(res.f[grepl("Pc", algorithm) & npts == i & dgp == "morris", alpha]))
-# }
+#### stats peel alpha (paragraph 7.1)
+
+mean(res[grepl("Pc", algorithm) & npts == 200, m.alpha])
+mean(res[grepl("Pc", algorithm) & npts == 800, m.alpha])
+for(i in c(200, 400, 800, 1600, 3200)){
+  print(mean(res.f[grepl("Pc", algorithm) & npts == i & dgp == "morris", alpha]))
+}
 
 
 

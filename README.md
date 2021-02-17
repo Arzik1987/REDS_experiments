@@ -3,7 +3,7 @@
 ### Folder Structure
 
 This folder contains the supplementary code for the paper "REDS: Rule Extraction for Discovering Scenarios". Namely,
-1. package "reds_0.12.tar.gz" containing the implementation of our method, competing methods, and the quality metrics;
+1. package "reds_0.14.tar.gz" containing the implementation of our method, competing methods, and the quality metrics;
 2. files ".R" and "RData" containing the code and data for reproducing all experiments and respective plots and tables presented in the paper.
 
 
@@ -35,13 +35,20 @@ To install our package, execute
 
 To repeat our experiments in each folder, open the file ".RProj" and open all files ".R" from that folder. To launch part of code, select it and press "Ctrl + Enter".
 
-### The folder "Experiments"
+### Obtaining the results
 
-The results will appear in the folder "plots_tables"
+The results will appear in the folders "plots_tables" in each subdirectory we refer to.
 
-To obtain Figures 4-10 and Tables 3-4, execute sequentially 
-* "do_experiments.R" (takes ~48 hours on 16 cores)
-* "analyze_experiments.R" (~30 minutes on 1 core) and
-* "plots_and_tables.R" (~2 minutes on 1 core)
+To obtain Figures 6-12, 14, Tables 3-4, and the results of the Wilcoxon-Mann-Whitney test, execute sequentially in the folders "continuous" and "mixed_ssl":
+* "do_experiments.R"
+* "analyze_experiments.R"
+* "plots_and_tables.R"
+* "additional_analysis.R"
 
-To obtain Table 2, execute "dgp_analysis.R" 
+To obtain Table 5 and Figure 13, execute sequentially in the folder "third_party":
+* "get_data.bat" - this script downloads the "TGL" and "lake" datasets
+* "do_experiments.R"
+* "analyze_experiments.R"
+* "plots_and_tables.R"
+
+To obtain column "share" of Table 2, execute "dgp_analysis.R" in the folder "continuous"
