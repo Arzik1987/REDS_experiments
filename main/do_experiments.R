@@ -30,7 +30,12 @@ reg = makeExperimentRegistry(file.dir = paste0(getwd(), "/registry"), packages =
 reg$cluster.functions = makeClusterFunctionsSocket()
 saveRegistry()
 
+
+
+
+#########
 #### data
+#########
 
 syntdata <- function(data, job, npts, dgp, distr, ...){
   train <- get.labs.box(n.points = npts, dgp = dgp, distr = distr,...)
@@ -62,7 +67,11 @@ addProblem(name = "dsgc", data = d, fun = simdata, seed = 2020)
 rm(d)
 
 
+
+
+###############
 #### algorithms
+###############
 
 P = function(data, job, instance, ...) {
   res <- norm.prim(dtrain = instance$train, dtest = instance$test, 
@@ -104,8 +113,6 @@ RPc = function(data, job, instance, ngen, meth, ...) {
   res
 }
 
-
-
 BI = function(data, job, instance, ...) {
   res <- best.interval(dtrain = instance$train, dtest = instance$test, 
                        box = instance$box, depth = "all", ...)
@@ -124,14 +131,12 @@ BIc = function(data, job, instance, ...) {
   res
 }
 
-
 RBIc = function(data, job, instance, ngen, meth, ...) {
   res <- reds.bi(dtrain = instance$train, dtest = instance$test, 
                box = instance$box, npts = ngen, depth = "cv",
                distr = instance$distr, meth = meth, ...)
   res
 }
-
 
 addAlgorithm(name = "P", fun = P)
 addAlgorithm(name = "Pc", fun = Pc)
@@ -152,10 +157,15 @@ reg$problems
 reg$algorithms
 
 
+
+
+####################
 #### add experiments
+####################
 
+# 1) functions 
 
-# functions 1
+# a) functions mixed inputs
 
 pdes = list(
   dgps = CJ(npts = c(400),
@@ -168,7 +178,6 @@ pdes = list(
                     "piston", "soblev99", "sobol", "welchetal92",
                     "willetal06", "wingweight"))
 )
-
 
 ades = list(
   P = data.table(),
@@ -184,7 +193,7 @@ ades = list(
 
 addExperiments(pdes, ades, repls = 25)
 
-# functions 2
+# b) functions with logitnormal input distribuion
 
 pdes = list(
   dgps = CJ(npts = c(400),
@@ -197,7 +206,6 @@ pdes = list(
                     "piston", "soblev99", "sobol", "welchetal92",
                     "willetal06", "wingweight"))
 )
-
 
 ades = list(
   P = data.table(),
@@ -213,6 +221,86 @@ ades = list(
 
 addExperiments(pdes, ades, repls = 25)
 
+# c) functions with continuous inputs
+
+pdes = list(
+  dgps = CJ(npts = c(200, 400, 800),
+            distr = c("laths"),
+            dgp = c(paste0(c(1:8)), "10", "borehole", "ellipse", "hart3",
+                    "hart4", "hart6sc", "ishigami", "linketal06dec",
+                    "linketal06simple", "linketal06sin", "loepetal13",
+                    "moon10hd", "moon10hdc1", "moon10low", "morretal06",
+                    "morris", "oakoh04", "otlcircuit",
+                    "piston", "soblev99", "sobol", "welchetal92",
+                    "willetal06", "wingweight"))
+)
+
+ades = list(
+  P = data.table(),
+  Pc = data.table(),
+  PB = data.table(),
+  PBc = data.table(),
+  RP = CJ(ngen = 100000, meth = c("rf", "svmRadial", "xgbTree")),
+  BI = data.table(),
+  BI5 = data.table(),
+  BIc = data.table(),
+  RBIc = CJ(ngen = 10000, meth = c("rf", "xgbTree"))
+)
+
+addExperiments(pdes, ades, repls = 50)
+
+
+# 2) simulations
+
+pdes = list(
+  dsgc = CJ(npts = c(200, 400, 800),
+            ind = 1:50)
+)
+
+addExperiments(pdes, ades, repls = 1)
+
+
+# 3) morris learning curves
+
+pdes = list(
+  dgps = CJ(npts = c(1600, 3200),
+            distr = c("laths"),
+            dgp = c("morris"))
+
+)
+
+ades = list(
+  P = data.table(),
+  Pc = data.table(),
+  PB = data.table(),
+  PBc = data.table(),
+  RP = CJ(ngen = 100000, meth = c("xgbTree")),
+  BI = data.table(),
+  BI5 = data.table(),
+  BIc = data.table(),
+  RBIc = CJ(ngen = 10000, meth = c("xgbTree"))
+)
+
+addExperiments(pdes, ades, repls = 50)
+
+
+# 4) morris different L
+
+pdes = list(
+  dgps = CJ(npts = c(400),
+            distr = c("laths"),
+            dgp = c("morris"))
+
+)
+
+ades = list(
+  RP = CJ(ngen = c(200, 400, 800, 1600, 3200, 6400, 25000), meth = c("xgbTree")),
+  RBIc = CJ(ngen = c(200, 400, 800, 1600, 3200, 6400), meth = c("xgbTree"))
+)
+
+addExperiments(pdes, ades, repls = 50)
+
+
 
 #### check what is where
 
@@ -220,7 +308,10 @@ summarizeExperiments()
 unwrap(getJobPars())
 
 
+
+####################
 #### run experiments
+####################
 
 submitJobs()
 waitForJobs()

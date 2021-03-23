@@ -6,12 +6,12 @@ library(reds)
 # Improving scenario discovery using orthogonal rotations. 
 # Environmental Modelling and Software. 48, (2013), 49-64.
 
-par(mfrow=c(3,3))
-dgps <- c(paste0(c(1:9)))
-for(dgp in dgps){
-  d <- get.labs.box(box = NULL, n.points = 1000, dgp = dgp)
-  plot(d[[1]][, 1:2], col = d[[2]] + 1, main = dgp, xlab = "x1", ylab = "x2", pch = 16)
-}
+# par(mfrow=c(3,3))
+# dgps <- c(paste0(c(1:9)))
+# for(dgp in dgps){
+#   d <- get.labs.box(box = NULL, n.points = 1000, dgp = dgp)
+#   plot(d[[1]][, 1:2], col = d[[2]] + 1, main = dgp, xlab = "x1", ylab = "x2", pch = 16)
+# }
 
 # dgps 1, 3, 5, 6, 7 are similar to those in the paper
 # dgp 9 is useless
@@ -44,19 +44,19 @@ write.csv(d, paste0(getwd(), "/plots_tables/Tab_8_shares.csv"), row.names = FALS
 
 
 
-for(dgp in dgps){
-  d <- get.labs.box(box = NULL, n.points = 10000, dgp = dgp, distr = "discr")
-  avgs <- c(avgs, mean(d[[2]]))
-  cat(paste0(dgp, " "))
-  cat(mean(d[[2]]))
-  cat("\n")
-}
-
-
-for(dgp in dgps){
-  d <- get.labs.box(box = NULL, n.points = 10000, dgp = dgp, distr = "logitnorm")
-  avgs <- c(avgs, mean(d[[2]]))
-  cat(paste0(dgp, " "))
-  cat(mean(d[[2]]))
-  cat("\n")
-}
+# for(dgp in dgps){
+#   d <- get.labs.box(box = NULL, n.points = 10000, dgp = dgp, distr = "discr")
+#   avgs <- c(avgs, mean(d[[2]]))
+#   cat(paste0(dgp, " "))
+#   cat(mean(d[[2]]))
+#   cat("\n")
+# }
+# 
+# 
+# for(dgp in dgps){
+#   d <- get.labs.box(box = NULL, n.points = 10000, dgp = dgp, distr = "logitnorm")
+#   avgs <- c(avgs, mean(d[[2]]))
+#   cat(paste0(dgp, " "))
+#   cat(mean(d[[2]]))
+#   cat("\n")
+# }

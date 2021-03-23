@@ -15,7 +15,7 @@ dir.create(file.path(getwd(), "plots_tables"), showWarnings = FALSE)
 
 load(paste0(getwd(),"/results/res.RData"))
 load(paste0(getwd(),"/results/res_f.RData"))
-load(paste0(getwd(),"/results/peeling_dsgc.RData"))
+# load(paste0(getwd(),"/results/peeling_dsgc.RData"))
 load(paste0(getwd(),"/results/peeling_morris.RData"))
 load(paste0(getwd(),"/dim.RData"))
 
@@ -28,7 +28,7 @@ res.fact <- function(d){
 
 res <- res.fact(res)
 res.f <- res.fact(res.f)
-peeling.dsgc <- res.fact(peeling.dsgc)
+# peeling.dsgc <- res.fact(peeling.dsgc)
 peeling.morris <- res.fact(peeling.morris)
 
 
@@ -69,7 +69,7 @@ g_legend <- function(a.gplot){
 #####           #########
 #########################
 
-#### Figure 4, Demonstration. Evaluation of BI
+#### Figure 6
 
 
 plot.boxes.dgp <- function(d, dg = "morris"){
@@ -101,13 +101,13 @@ plot.boxes.dgp <- function(d, dg = "morris"){
 }
 
 p <- plot.boxes.dgp(res.f[(distr == "laths" | is.na(distr))], dg = "morris")
-ggsave(paste0(getwd(), "/plots_tables/Fig_demo.pdf"), 
+ggsave(paste0(getwd(), "/plots_tables/Fig_6_demo.pdf"), 
        plot = p, device = cairo_pdf, width = 2.1, height = 0.84)
 
 
 
 
-#### Figures 5--6. Relative quality change in %
+#### Figures 7, 8, 10, 14
 
 plot.dgpwize <- function(d, np, coef = 100, lbl = "auc"){
   
@@ -124,7 +124,7 @@ plot.dgpwize <- function(d, np, coef = 100, lbl = "auc"){
   } else if(lbl == "cons"){
     lbl <- "consistency"
     d <- d[, .(algorithm, m.consist)]
-  } else if(lbl == "WRAcc"){
+  } else if(lbl == "wracc"){
     lbl <- "WRAcc"
     d <- d[, .(algorithm, m.wracc)]
   } else {
@@ -194,81 +194,78 @@ plot.dgpwize <- function(d, np, coef = 100, lbl = "auc"){
   p
 }
 
+
+#### Figure 7
+
 d <- get.ratios(res[algorithm %in% c("P", "Pc", "PB", "PBc", "RPf", "RPx", "RPs") & (distr == "laths" | is.na(distr)),], 
                 np = 400, bsln = "Pc")
 
 for(lbl in c("auc", "prec", "restr", "cons")){
   p <- plot.dgpwize(d, np = 400, coef = 100, lbl = lbl)
-  ggsave(paste0(getwd(), "/plots_tables/Fig_P_", lbl, ".pdf"), 
+  ggsave(paste0(getwd(), "/plots_tables/Fig_7_PRIM_", lbl, ".pdf"), 
          plot = p, device = cairo_pdf, width = 2.7, height = 1)
 }
+
+
+#### Figure 8
 
 d <- get.ratios(res[algorithm %in% c("BI", "BIc", "RBIcxp") & (distr == "laths" | is.na(distr)),], 
                 np = 400, bsln = "BIc")
 
-for(lbl in c("WRAcc", "cons")){
+for(lbl in c("wracc", "cons")){
   p <- plot.dgpwize(d, np = 400, coef = 100, lbl = lbl)
-  ggsave(paste0(getwd(), "/plots_tables/Fig_BI_", lbl, ".pdf"), 
+  ggsave(paste0(getwd(), "/plots_tables/Fig_8_BI_", lbl, ".pdf"), 
          plot = p, device = cairo_pdf, width = 0.95, height = 0.75)
 }
 p <- plot.dgpwize(d, np = 400, coef = 100, lbl = "restr")
-ggsave(paste0(getwd(), "/plots_tables/Fig_BI_", "restr", ".pdf"),
+ggsave(paste0(getwd(), "/plots_tables/Fig_8_BI_", "restr", ".pdf"),
        plot = p, device = cairo_pdf, width = 1.05, height = 0.75)
 
 
 
-
-#### discr
+#### Figure 10
 
 d <- get.ratios(res[algorithm %in% c("Pc", "PBc", "RPcxp") & distr == "discr",], 
-                np = 400, bsln = "PBc")
+                np = 400, bsln = "Pc")
 
 for(lbl in c("auc", "prec")){
   p <- plot.dgpwize(d, np = 400, coef = 100, lbl = lbl)
-  ggsave(paste0(getwd(), "/plots_tables/Fig_P_", lbl, "_discr.pdf"), 
-         plot = p, device = cairo_pdf, width = 0.9, height = 0.7)
+  ggsave(paste0(getwd(), "/plots_tables/Fig_10_PRIM_", lbl, ".pdf"), 
+         plot = p, device = cairo_pdf, width = 0.95, height = 0.75)
 }
 
 d <- get.ratios(res[algorithm %in% c("BI", "BIc", "RBIcxp") & distr == "discr",], 
                 np = 400, bsln = "BIc")
 
-for(lbl in c("WRAcc")){
+for(lbl in c("wracc")){
   p <- plot.dgpwize(d, np = 400, coef = 100, lbl = lbl)
-  ggsave(paste0(getwd(), "/plots_tables/Fig_BI_", lbl, "_discr.pdf"), 
-         plot = p, device = cairo_pdf, width = 0.9, height = 0.7)
+  ggsave(paste0(getwd(), "/plots_tables/Fig_10_BI_", lbl, ".pdf"), 
+         plot = p, device = cairo_pdf, width = 0.95, height = 0.75)
 }
 
 
-
-
-#### logitnorm
+#### Figure 14
 
 d <- get.ratios(res[algorithm %in% c("Pc", "PBc", "RPx") & distr == "logitnorm",], 
                 np = 400, bsln = "Pc")
 
 for(lbl in c("auc", "prec")){
   p <- plot.dgpwize(d, np = 400, coef = 100, lbl = lbl)
-  ggsave(paste0(getwd(), "/plots_tables/Fig_P_", lbl, "_ssl.pdf"), 
-         plot = p, device = cairo_pdf, width = 0.9, height = 0.7)
+  ggsave(paste0(getwd(), "/plots_tables/Fig_14_PRIM_", lbl, ".pdf"), 
+         plot = p, device = cairo_pdf, width = 0.95, height = 0.75)
 }
 
 d <- get.ratios(res[algorithm %in% c("BI", "BIc", "RBIcxp") & distr == "logitnorm",], 
                 np = 400, bsln = "BIc")
 
-for(lbl in c("WRAcc")){
+for(lbl in c("wracc")){
   p <- plot.dgpwize(d, np = 400, coef = 100, lbl = lbl)
-  ggsave(paste0(getwd(), "/plots_tables/Fig_BI_", lbl, "_ssl.pdf"), 
-         plot = p, device = cairo_pdf, width = 0.9, height = 0.7)
+  ggsave(paste0(getwd(), "/plots_tables/Fig_14_BI_", lbl, ".pdf"), 
+         plot = p, device = cairo_pdf, width = 0.95, height = 0.75)
 }
 
 
-
-
-
-
-
-
-############ runtimes
+#### Figure 9
 
 
 plot.rt <- function(d, yl = TRUE){
@@ -315,7 +312,7 @@ d <- res[algorithm %in% c("PBc", "Pc", "RPx", "RPf")
          & (distr == "laths" | is.na(distr)),]
 p <- plot.rt(d)
 
-ggsave(paste0(getwd(), "/plots_tables/runtime_P_lath.pdf"), 
+ggsave(paste0(getwd(), "/plots_tables/Fig_9_PRIM_runtime.pdf"), 
        plot = p, device = cairo_pdf, width = 1.75, height = 1)
 
 
@@ -324,15 +321,11 @@ d <- res[algorithm %in% c("BI", "BIc", "RBIcxp")
          & (distr == "laths" | is.na(distr)),]
 p <- plot.rt(d, yl = FALSE)
 
-ggsave(paste0(getwd(), "/plots_tables/runtime_BI_lath.pdf"), 
+ggsave(paste0(getwd(), "/plots_tables/Fig_9_BI_runtime.pdf"), 
        plot = p, device = cairo_pdf, width = 1.45, height = 1)
 
 
-
-
-
-
-#### Figure 7. Peeling trajectories
+#### Figure 11
 
 plot.curves <- function(d, f = 0.4, coly = "black"){
   
@@ -372,14 +365,10 @@ plot.curves <- function(d, f = 0.4, coly = "black"){
 peeling <- peeling.morris[algorithm %in% c("P", "Pc", "RPx")]
 p <- plot.curves(peeling)
 
-ggsave(paste0(getwd(), "/plots_tables/Fig_peeling_morris.pdf"), 
+ggsave(paste0(getwd(), "/plots_tables/Fig_11_morris_peeling.pdf"), 
        plot = p, device = cairo_pdf, width = 1.5, height = 0.9)
 
 
-
-
-
-#### Figure 8. Quality metrics
 
 plot.boxes <- function(d, np = 400, lbl, coef = 100){
   
@@ -393,7 +382,7 @@ plot.boxes <- function(d, np = 400, lbl, coef = 100){
   } else if(lbl == "restr"){
     lbl <- "# restricted"
     d <- d[, .(algorithm, interp)]
-  } else if(lbl == "WRAcc"){
+  } else if(lbl == "wracc"){
     lbl <- "WRAcc"
     d <- d[, .(algorithm, wracc)]
   } else {
@@ -435,24 +424,19 @@ plot.boxes <- function(d, np = 400, lbl, coef = 100){
 lbl = "auc"
 p <- plot.boxes(res.f[algorithm %in% c("P", "Pc", "RPx") 
                       & (distr == "laths" | is.na(distr)),], lbl = lbl)
-ggsave(paste0(getwd(), "/plots_tables/Fig_morris_", lbl, ".pdf"), 
+ggsave(paste0(getwd(), "/plots_tables/Fig_11_morris_", lbl, ".pdf"), 
        plot = p, device = cairo_pdf, width = 1.5, height = 0.9)
 
 
-lbl = "WRAcc"
-p <- plot.boxes(res.f[algorithm %in% c("BI", "BIc", "RBIcxp") 
-                      & (distr == "laths" | is.na(distr)),], lbl = lbl)
-ggsave(paste0(getwd(), "/plots_tables/Fig_morris_", lbl, ".pdf"), 
-       plot = p, device = cairo_pdf, width = 1.5, height = 0.9)
-
-
-tmp <- res.f[algorithm %in% c("Pc", "RPx") & npts == 400 & 
-        (is.na(ngen) | ngen == 100000 | ngen == 10000) & dgp == "morris"]
-wilcox.test(auc ~ algorithm, data = tmp)
+# lbl = "wracc"
+# p <- plot.boxes(res.f[algorithm %in% c("BI", "BIc", "RBIcxp") 
+#                       & (distr == "laths" | is.na(distr)),], lbl = lbl)
+# ggsave(paste0(getwd(), "/plots_tables/Fig_morris_", lbl, ".pdf"), 
+#        plot = p, device = cairo_pdf, width = 1.5, height = 0.9)
 
 
 
-#### Figure 9-10. Learning curves; number of generated points.
+#### Figure 12
 
 
 plot.np <- function(d, lbl, fn, err = TRUE, nm = fn){
@@ -467,7 +451,7 @@ plot.np <- function(d, lbl, fn, err = TRUE, nm = fn){
   } else if(lbl == "restr"){
     lbl <- "# restricted"
     d <- d[, .(npts, algorithm, interp)]
-  } else if(lbl == "WRAcc"){
+  } else if(lbl == "wracc"){
     lbl <- "WRAcc"
     d <- d[, .(npts, algorithm, wracc)]
   } else {
@@ -556,7 +540,7 @@ plot.ngen <- function(d, lbl, fn, np = 400, err = TRUE, nm = fn){
   } else if(lbl == "restr"){
     lbl <- "# restricted"
     d <- d[, .(ngen, algorithm, interp)]
-  } else if(lbl == "WRAcc"){
+  } else if(lbl == "wracc"){
     lbl <- "WRAcc"
     d <- d[, .(ngen, algorithm, wracc)]
   } else {
@@ -648,21 +632,21 @@ p3 <- grid.arrange(mylegend,
                                ggplot() + theme_void() + xlab(NULL),
                                p2 + theme(legend.position = "none"),
                                nrow = 1, widths = c(10,1,10)), nrow = 2, heights = c(1, 7))
-ggsave(paste0(getwd(), "/plots_tables/Fig_P_np_ngen.pdf"), 
+ggsave(paste0(getwd(), "/plots_tables/Fig_12_PRIM_np_ngen.pdf"), 
        plot = p3, device = cairo_pdf, width = 3.2, height = 1.3)
 
 
 
 d <- res.f[algorithm %in% c("BI", "BIc", "RBIcxp") & (distr == "laths" | is.na(distr)),]
-p1 <- plot.np(d, fn = "morris", lbl = "WRAcc", nm = "morris, L=10000")
-p2 <- plot.ngen(d, fn = "morris", lbl = "WRAcc", nm = "morris, N=400")
-mylegend <- g_legend(plot.np(d, fn = "morris", lbl = "WRAcc", err = FALSE))
+p1 <- plot.np(d, fn = "morris", lbl = "wracc", nm = "morris, L=10000")
+p2 <- plot.ngen(d, fn = "morris", lbl = "wracc", nm = "morris, N=400")
+mylegend <- g_legend(plot.np(d, fn = "morris", lbl = "wracc", err = FALSE))
 p3 <- grid.arrange(mylegend,
                    arrangeGrob(p1 + theme(legend.position = "none"),
                                ggplot() + theme_void() + xlab(NULL),
                                p2 + theme(legend.position = "none"),
                                nrow = 1, widths = c(10,1,10)), nrow = 2, heights = c(1, 7))
-ggsave(paste0(getwd(), "/plots_tables/Fig_BI_np_ngen.pdf"), 
+ggsave(paste0(getwd(), "/plots_tables/Fig_12_BI_np_ngen.pdf"), 
        plot = p3, device = cairo_pdf, width = 3.2, height = 1.3)
 
 
@@ -810,7 +794,7 @@ write.table(d, paste0(getwd(), "/plots_tables/Tabs_P_irrel.txt"),
 
 
 d <- d.dim[dim > inf.dim,]
-tmp <- res[npts %in% c(200, 400, 800) & (is.na(ngen) | ngen == 100000) & 
+tmp <- res[npts %in% c(200, 400, 800) & (is.na(ngen) | ngen == 10000) & 
              algorithm %in% c("BI", "BIc", "BI5", "RBIcfp", "RBIcxp") & (distr == "laths" | is.na(distr)),]
 d <- ijoin(d, tmp, by = "dgp")
 d[, dim.r := m.interp - inf.dim]
@@ -825,8 +809,15 @@ write.table(d, paste0(getwd(), "/plots_tables/Tabs_BI_irrel.txt"),
 
 
 
-# #### stats peel alpha (paragraph 7.1)
-# 
+
+##########################
+#####            #########
+##### STATISTICS #########
+#####            #########
+##########################
+
+# #### stats peel alpha
+
 # mean(res[grepl("Pc", algorithm) & npts == 200, m.alpha])
 # mean(res[grepl("Pc", algorithm) & npts == 800, m.alpha])
 # for(i in c(200, 400, 800, 1600, 3200)){
@@ -835,5 +826,88 @@ write.table(d, paste0(getwd(), "/plots_tables/Tabs_BI_irrel.txt"),
 
 
 
+#### Section 9.2.1 wilcox
 
+tmp <- res.f[algorithm %in% c("Pc", "RPx") & npts == 400 & 
+               (is.na(ngen) | ngen == 100000 | ngen == 10000) & dgp == "morris"]
+wilcox.test(auc ~ algorithm, data = tmp)
+
+
+
+#### Section 9.1.1 correlation
+
+d <- get.ratios(res[(distr == "laths" | is.na(distr)) & algorithm %in% c("Pc", "RPx"),], np = 400, bsln = "Pc")
+d <- d[algorithm == "RPx", .(dgp, m.auc, m.prec, m.consist)]
+d <- merge(d, d.dim, by = "dgp")
+
+cor(d[, -"dgp"], use = "pairwise.complete.obs", method = "spearman")[4:5,]
+
+d <- get.ratios(res[(distr == "laths" | is.na(distr)) & algorithm %in% c("BIc", "RBIcxp"),], np = 400, bsln = "BIc")
+d <- d[algorithm == "RBIcxp", .(dgp, m.wracc, m.consist)]
+d <- merge(d, d.dim, by = "dgp")
+
+cor(d[, -"dgp"], use = "pairwise.complete.obs", method = "spearman")[3:4,]
+
+
+
+#### Section 9.1.1 continuous
+
+load(paste0(getwd(),"/results/res.RData"))
+source("friedman.r")
+
+d <- as.data.frame(res[algorithm %in% c("BI", "BIc", "RBIcxp") 
+                       & npts == 400 & (is.na(ngen) | ngen == 10000) 
+                       & (distr == "laths" | is.na(distr)),])
+d$dgp <- as.factor(d$dgp)
+friedman.test.with.post.hoc(m.wracc ~ algorithm | dgp, data = d)
+
+
+d <- as.data.frame(res[algorithm %in% c("P","PB", "PBc", "Pc", "RPx", "RPf", "RPs") 
+                       & npts == 400 & (is.na(ngen) | ngen == 100000) 
+                       & (distr == "laths" | is.na(distr)),])
+d$dgp <- as.factor(d$dgp)
+friedman.test.with.post.hoc(m.auc ~ algorithm | dgp, data = d)
+friedman.test.with.post.hoc(m.prec ~ algorithm | dgp, data = d)
+
+
+
+## Section 9.1.2 mixed
+
+load(paste0(getwd(),"/results/res.RData"))
+source("friedman.r")
+
+d <- as.data.frame(res[algorithm %in% c("BI", "BIc", "RBIcxp") 
+                       & npts == 400 & (is.na(ngen) | ngen == 10000) 
+                       & distr == "discr",])
+d$dgp <- as.factor(d$dgp)
+friedman.test.with.post.hoc(m.wracc ~ algorithm | dgp, data = d)
+
+
+d <- as.data.frame(res[algorithm %in% c("PBc", "Pc", "RPcxp") 
+                       & npts == 400 & (is.na(ngen) | ngen == 100000) 
+                       & distr == "discr",])
+d$dgp <- as.factor(d$dgp)
+friedman.test.with.post.hoc(m.auc ~ algorithm | dgp, data = d)
+friedman.test.with.post.hoc(m.prec ~ algorithm | dgp, data = d)
+
+
+
+#### Section 9.4, semi-supervised, FYI
+
+# load(paste0(getwd(),"/results/res.RData"))
+# source("friedman.r")
+# 
+# d <- as.data.frame(res[algorithm %in% c("BI", "BIc", "RBIcxp") 
+#                        & npts == 400 & (is.na(ngen) | ngen == 10000) 
+#                        & distr == "logitnorm",])
+# d$dgp <- as.factor(d$dgp)
+# friedman.test.with.post.hoc(m.wracc ~ algorithm | dgp, data = d)
+# 
+# 
+# d <- as.data.frame(res[algorithm %in% c("P", "PB", "PBc", "Pc", "RPxp", "RPx") 
+#                        & npts == 400 & (is.na(ngen) | ngen == 100000) 
+#                        & distr == "logitnorm",])
+# d$dgp <- as.factor(d$dgp)
+# friedman.test.with.post.hoc(m.auc ~ algorithm | dgp, data = d)
+# friedman.test.with.post.hoc(m.prec ~ algorithm | dgp, data = d)
 

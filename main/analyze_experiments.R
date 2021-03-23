@@ -166,7 +166,7 @@ get.metrics <- function(reg, metric = "auc", pars){
 
 get.consist <- function(ids, k = 3, pars){ 
   
-  if(!(length(ids) %in% c(50, 31, 25))){stop("number of ids != 50 or 31, or 25")}
+  if(!(length(ids) %in% c(50, 25))){stop("number of ids != 50 or 25")}
   pb$tick()
   
   di <- pars[job.id == ids[1], distr]
@@ -224,7 +224,7 @@ get.peeling <- function(reg, dgpname, tab, npo = 400, dist = "laths"){
   tmpres <- list()
   
   subtab <- tab[npts == npo & is.na(ngen) & dgp == dgpname & 
-                  grepl("P", algorithm) & distr == dist & is.na(meth),]
+                  grepl("P", algorithm) & (distr == dist | is.na(distr)) & is.na(meth),]
   
   for(alg in unique(subtab$algorithm)){
       ids <- subtab[algorithm == alg]
@@ -236,7 +236,7 @@ get.peeling <- function(reg, dgpname, tab, npo = 400, dist = "laths"){
   }
   
   subtab <- tab[npts == npo & ngen == 100000 & dgp == dgpname & 
-                  grepl("RP", algorithm) & distr == dist & meth != "svmRadial",]
+                  grepl("RP", algorithm) & (distr == dist | is.na(distr)) & meth != "svmRadial",]
   
   for(alg in unique(subtab$algorithm)){
     for(met in unique(subtab$met)){
@@ -250,7 +250,7 @@ get.peeling <- function(reg, dgpname, tab, npo = 400, dist = "laths"){
   }
   
   subtab <- tab[npts == npo & ngen == 100000 & dgp == dgpname & 
-                  grepl("RP", algorithm) & distr == dist,]
+                  grepl("RP", algorithm) & (distr == dist | is.na(distr)),]
   
   for(alg in unique(subtab$algorithm)){
     for(met in unique(subtab$met)){
@@ -332,7 +332,8 @@ res <- res.f[, .(m.auc = mean(auc),
              by = setdiff(nms, c("job.id", "ind"))]
 
 d <- pars[is.na(meth) | meth != "svmRadial"]
-print("consistency \n 1/2")
+print("consistency")
+print("1/2")
 
 total <- nrow(unique(as.data.frame(d)[, setdiff(names(d), c("job.id", "ind"))]))
 pb <- progress_bar$new(total = total)
@@ -353,12 +354,12 @@ res <- ijoin(cons, res, by = setdiff(nms, c("job.id", "ind")))
 
 #### for lowess
 
-peeling.dsgc <- get.peeling(reg, "dsgc", tab = pars)
+# peeling.dsgc <- get.peeling(reg, "dsgc", tab = pars)
 peeling.morris <- get.peeling(reg, "morris", tab = pars)
 
 dir.create(file.path(getwd(), "results"), showWarnings = FALSE)
 save(res.f, file = paste0(getwd(),"/results/res_f.RData"))
 save(res, file = paste0(getwd(),"/results/res.RData"))
-save(peeling.dsgc, file = paste0(getwd(),"/results/peeling_dsgc.RData"))
+# save(peeling.dsgc, file = paste0(getwd(),"/results/peeling_dsgc.RData"))
 save(peeling.morris, file = paste0(getwd(),"/results/peeling_morris.RData"))
 

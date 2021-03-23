@@ -20,7 +20,7 @@ load(paste0(getwd(),"/results/peeling_lake.RData"))
 
 
 
-#### Figure XXX. Peeling trajectories
+#### Figure 13. Peeling trajectories
 
 plot.curves <- function(d, f = 0.4, label = "", coly = "black"){
   
@@ -74,7 +74,7 @@ p3 <- grid.arrange(mylegend,
                                p2 + theme(legend.position="none"),
                                nrow = 1), nrow = 2, heights = c(1, 7))
 
-ggsave(paste0(getwd(), "/plots_tables/Fig_peeling_sd.pdf"), 
+ggsave(paste0(getwd(), "/plots_tables/Fig_13_tp_peeling.pdf"), 
        plot = p3, device = cairo_pdf, width = 3, height = 1.2)
 
 
@@ -108,42 +108,42 @@ write.csv(tmp, paste0(getwd(), "/plots_tables/lake.csv"))
 
 
 
-# #### reproduce reference plots and see REDS in work
-
-source("read_data.R")
-
-#### TGL 
-
-train <- list()
-train[[1]] <- dTGL[,1:9]
-train[[2]] <- dTGL[,10]
-box <- matrix(c(67, 450, 0, 80, 0.2, -0.8, 0, -0.1,90,
-         134, 1000,	1, 100, 0.6, -0.2, 2, 0.1, 200), nrow = 2, byrow = TRUE)
-
-res <- norm.prim(dtrain = train, dtest = NULL, box = box, peel.alpha = 0.1)
-res.rf <- reds.prim(dtrain = train, dtest = train, box = box, npts = 100000, distr = "laths", meth = "rf")
-
-plot(res[[2]][,1], res[[2]][,2], xlim = c(0,1), ylim = c(0,1))
-lines(res.rf[[2]][,1], res.rf[[2]][,2], col = "red")
-
-res$boxes
-res.rf$boxes.pred[length(res.rf$boxes.pred)]
-res.rf$boxes.prob[length(res.rf$boxes.prob)]
-
-#### lake
-
-box <- matrix(c(0.1, 0.93, 0.01, 2, 0.001,
-         0.45, 0.99, 0.05, 4.5, 0.005), nrow = 2, byrow = TRUE)
-
-res <- norm.prim(dtrain = dl, dtest = NULL, box = box, peel.alpha = 0.05)
-res.rf <- reds.prim(dtrain = dl, dtest = dl, box = box, npts = 100000, distr = "laths", meth = "rf")
-
-plot(res[[2]][,1], res[[2]][,2], xlim = c(0,1), ylim = c(0,1))
-lines(res.rf[[2]][,1], res.rf[[2]][,2], col = "red")
-
-res$boxes[length(res$boxes)]
-res.rf$boxes.pred[length(res.rf$boxes.pred)]
-res.rf$boxes.prob[length(res.rf$boxes.prob)]
-
-# #### END TEST
-
+# # #### reproduce reference plots and see REDS in work
+# 
+# source("read_data.R")
+# 
+# #### TGL 
+# 
+# train <- list()
+# train[[1]] <- dTGL[,1:9]
+# train[[2]] <- dTGL[,10]
+# box <- matrix(c(67, 450, 0, 80, 0.2, -0.8, 0, -0.1,90,
+#          134, 1000,	1, 100, 0.6, -0.2, 2, 0.1, 200), nrow = 2, byrow = TRUE)
+# 
+# res <- norm.prim(dtrain = train, dtest = NULL, box = box, peel.alpha = 0.1)
+# res.rf <- reds.prim(dtrain = train, dtest = train, box = box, npts = 100000, distr = "laths", meth = "rf")
+# 
+# plot(res[[2]][,1], res[[2]][,2], xlim = c(0,1), ylim = c(0,1))
+# lines(res.rf[[2]][,1], res.rf[[2]][,2], col = "red")
+# 
+# res$boxes
+# res.rf$boxes.pred[length(res.rf$boxes.pred)]
+# res.rf$boxes.prob[length(res.rf$boxes.prob)]
+# 
+# #### lake
+# 
+# box <- matrix(c(0.1, 0.93, 0.01, 2, 0.001,
+#          0.45, 0.99, 0.05, 4.5, 0.005), nrow = 2, byrow = TRUE)
+# 
+# res <- norm.prim(dtrain = dl, dtest = NULL, box = box, peel.alpha = 0.05)
+# res.rf <- reds.prim(dtrain = dl, dtest = dl, box = box, npts = 100000, distr = "laths", meth = "rf")
+# 
+# plot(res[[2]][,1], res[[2]][,2], xlim = c(0,1), ylim = c(0,1))
+# lines(res.rf[[2]][,1], res.rf[[2]][,2], col = "red")
+# 
+# res$boxes[length(res$boxes)]
+# res.rf$boxes.pred[length(res.rf$boxes.pred)]
+# res.rf$boxes.prob[length(res.rf$boxes.prob)]
+# 
+# # #### END TEST
+# 
