@@ -203,7 +203,7 @@ d <- get.ratios(res[algorithm %in% c("P", "Pc", "PB", "PBc", "RPf", "RPx", "RPs"
 for(lbl in c("auc", "prec", "restr", "cons")){
   p <- plot.dgpwize(d, np = 400, coef = 100, lbl = lbl)
   ggsave(paste0(getwd(), "/plots_tables/Fig_7_PRIM_", lbl, ".pdf"), 
-         plot = p, device = cairo_pdf, width = 2.7, height = 1)
+         plot = p, device = cairo_pdf, width = 2.7, height = 0.99)
 }
 
 
