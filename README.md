@@ -11,14 +11,14 @@ ACM, NewYork, NY, USA, 14 pages. https://doi.org/10.1145/3448016.3457301.
 
 Namely,
 1. package "reds_0.14.tar.gz" containing the implementation of REDS, PRIM and BI algorithms, the quality metrics and the functions we experiment with. 
-This version corresponds to the commit 12da8bd1b535169975aa686d4bdf4015d3a46563 in the repository https://github.com/Arzik1987/reds;
+This version corresponds to the commit 12da8bd1b535169975aa686d4bdf4015d3a46563 in the [reds repository](https://github.com/Arzik1987/reds);
 2. files ".R" and "RData" containing the code and data for reproducing all experiments and respective plots and tables presented in the paper;
-3. files ".bat", which download the third-party datasets and code to analalyse the results from other repositories on github.
+3. files ".bat" that downloads from other repositories on github the third-party datasets and code to analalyse the results.
 
 
 ### Required packages
 
-In our experiments we used the following other packages, available at CRAN repository (https://cran.r-project.org/)
+In our experiments we used the following other packages, available at [CRAN repository](https://cran.r-project.org/)
 * caret (Version: 6.0-86)
 * randomForest (Version: 4.6-14)
 * sensitivity (Version: 1.22.0)
@@ -37,7 +37,7 @@ For producing the plots we additionally used:
 
 ### How to install and execute the code
 
-The rest of the description assumes that one uses RStudio (https://www.rstudio.com/). To execute part of code, select it and press "Ctrl + Enter". Any of the above packages can be installed with the command
+The rest of the description assumes that one uses [RStudio](https://www.rstudio.com/). To execute part of code, select it and press "Ctrl + Enter". Any of the above packages can be installed with the command
 `install.packages("<package-name>")`
 
 To install our package, execute
