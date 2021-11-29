@@ -16,9 +16,11 @@ This version corresponds to the commit 12da8bd1b535169975aa686d4bdf4015d3a46563 
 3. files ".bat" that downloads from other repositories on github the third-party datasets and code to analalyse the results.
 
 
-### Required packages
+### Hardware/Software
 
-In our experiments we used the following other packages, available at [CRAN repository](https://cran.r-project.org/)
+We used a virtual machine with 32 cores at 2GHz (AMD EPYC 7551) and 128GB of memory operated by Linux 5.4.0. The experiments can also be executed under Windows.
+
+In our experiments we used R version 3.6.3 with the following packages available at [CRAN repository](https://cran.r-project.org/)
 * caret (Version: 6.0-86)
 * randomForest (Version: 4.6-14)
 * sensitivity (Version: 1.22.0)
@@ -28,6 +30,7 @@ In our experiments we used the following other packages, available at [CRAN repo
 * data.table (Version: 1.13.0)
 * logitnorm (Version 0.8.38)
 
+Postprocessing was done on a Windows 10 operated machine with 4 cores at 2.10GHz (AMD Ryzen 5 PRO 3500U) and 16GB of memory. 
 For producing the plots we additionally used:
 * reshape (Version: 0.8.8)
 * ggplot2 (Version: 3.3.2)
