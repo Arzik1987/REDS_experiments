@@ -10,59 +10,47 @@ Management of Data (SIGMOD ’21), June 20–25, 2021, Virtual Event, China.
 ACM, NewYork, NY, USA, 14 pages. https://doi.org/10.1145/3448016.3457301. 
 
 Namely,
-1. package "reds_0.14.tar.gz" containing the implementation of REDS, PRIM and BI algorithms, the quality metrics and the functions we experiment with. 
+1. package "reds_0.14.tar.gz" containing the implementation of REDS, PRIM, and BI algorithms, the quality metrics, and the functions we experiment with. 
 This version corresponds to the commit 12da8bd1b535169975aa686d4bdf4015d3a46563 in the [reds repository](https://github.com/Arzik1987/reds);
 2. files ".R" and "RData" containing the code and data for reproducing all experiments and respective plots and tables presented in the paper;
-3. files ".bat" that downloads from other repositories on github the third-party datasets and code to analalyse the results.
+3. files ".bat" that download from other repositories on GitHub the third-party datasets and code to analyze the results. On a non-Windows machine, you need to execute the commands from this file manually.
 
 
 ### Hardware/Software
 
-We used a virtual machine with 32 cores at 2GHz (AMD EPYC 7551) and 128GB of memory operated by Linux 5.4.0. The experiments can also be executed under Windows.
+We used a virtual machine with 32 cores at 2GHz (AMD EPYC 7551) and 128GB of memory operated by Linux 5.4.0. 
 
-In our experiments we used R version 3.6.3 with the following packages available at [CRAN repository](https://cran.r-project.org/)
-* caret (Version: 6.0-86)
-* randomForest (Version: 4.6-14)
-* sensitivity (Version: 1.22.0)
-* lhs (Version: 1.0.2)
-* stats (Version: 4.0.1)
-* batchtools (Version: 0.9.13)
-* data.table (Version: 1.13.0)
-* logitnorm (Version 0.8.38)
+In our experiments, we used [R version 3.6.3](https://cran.r-project.org/bin/windows/base/old/3.6.3/) 
 
-Postprocessing was done on a Windows 10 operated machine with 4 cores at 2.10GHz (AMD Ryzen 5 PRO 3500U) and 16GB of memory. 
-For producing the plots we additionally used:
-* reshape (Version: 0.8.8)
-* ggplot2 (Version: 3.3.2)
-* gridExtra (Version: 2.3)
-* RColorBewer (Version: 1.1-2)
+You will also need [Rtools](https://cran.rstudio.com/bin/windows/Rtools/Rtools35.exe) to install specific versions of packages.
+
+For convenience, one may also use [RStudio](https://www.rstudio.com/products/rstudio/download/#download). In RStudio, to execute part of code, one selects it and presses "Ctrl + Enter".  
 
 
-### How to install and execute the code
+### Getting ready to execute experiments
 
-The rest of the description assumes that one uses [RStudio](https://www.rstudio.com/). To execute part of code, select it and press "Ctrl + Enter". Any of the above packages can be installed with the command
-`install.packages("<package-name>")`
+In each folder
+* run the file ".bat" (or execute the commands from this file manually on non-Windows machines)
+* navigate to the folder "install_requirements",
+* (if using RStudio) open the files  "install_requirements.RProj" and "install_requirements.R" in this sequence
 
-To install our package, execute
-`install.packages("<path-to-file>", repos = NULL, type = "source")`
 
-To repeat our experiments, in each folder
-1. run the file ".bat"
-2. open the file ".RProj"
-3. open all files ".R" from that folder. 
+### Obtaining figures and tables 
 
-### Obtaining the results
+The results will appear in the folders "main/plots_tables" and "third_party/plots_tables".
 
-The results will appear in the folders "plots_tables" in each subdirectory we refer to.
+To obtain Figures 6-12, 14, Tables 3-4, and the results of the statistical tests, do:
+* navigate to the folder "main",
+* (if using RStudio) open the file "experiments_main.RProj" and all files ".R" in this sequence,
+* "do_experiments.R",
+* "analyze_experiments.R",
+* "plots_and_tables.R".
 
-To obtain Figures 6-12, 14, Tables 3-4, and the results of the statistical tests, execute sequentially in the folders "main":
-* "do_experiments.R"
-* "analyze_experiments.R"
-* "plots_and_tables.R"
+To obtain column "share" of Table 2, execute "dgp_analysis.R"
 
-To obtain Table 5 and Figure 13, execute sequentially in the folder "third_party":
-* "do_experiments.R"
-* "analyze_experiments.R"
-* "plots_and_tables.R"
-
-To obtain column "share" of Table 2, execute "dgp_analysis.R" in the folder "continuous"
+To obtain Table 5 and Figure 13, do:
+* navigate to the folder "third_party",
+* (if using RStudio) open the file "experiments_tp.RProj" and all files ".R" in this sequence,
+* "do_experiments.R",
+* "analyze_experiments.R",
+* "plots_and_tables.R".
