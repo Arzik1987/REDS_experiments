@@ -20,9 +20,9 @@ This version corresponds to the commit 12da8bd1b535169975aa686d4bdf4015d3a46563 
 
 We used a virtual machine with 32 cores at 2GHz (AMD EPYC 7551) and 128GB of memory operated by Linux 5.4.0. 
 
-In our experiments, we used [R version 3.6.3](https://cran.r-project.org/bin/windows/base/old/3.6.3/R-3.6.3-win.exe) 
+In our experiments, we used [R version 3.6.3](https://cran.r-project.org/bin/windows/base/old/3.6.3/) 
 
-You will also need [Rtools](https://cran.rstudio.com/bin/windows/Rtools/Rtools35.exe) to install specific versions of packages.
+You will also need [Rtools35](https://cran.rstudio.com/bin/windows/Rtools/history.html) to install specific versions of packages.
 
 For convenience, one may also use [RStudio](https://www.rstudio.com/products/rstudio/download/#download). In RStudio, to execute part of code, one selects it and presses "Ctrl + Enter".  
 
