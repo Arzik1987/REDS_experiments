@@ -24,33 +24,33 @@ In our experiments, we used [R version 3.6.3](https://cran.r-project.org/bin/win
 
 You will also need [Rtools35](https://cran.rstudio.com/bin/windows/Rtools/history.html) to install specific versions of packages.
 
-For convenience, one may also use [RStudio](https://www.rstudio.com/products/rstudio/download/#download). In RStudio, to execute part of code, one selects it and presses "Ctrl + Enter".  
+For convenience, we recommend using [RStudio](https://www.rstudio.com/products/rstudio/download/#download). In RStudio, to execute part of code, one selects it and presses `Ctrl + Enter`.  
 
 
 ### Getting ready to execute experiments
 
-In each folder
-* run the file ".bat" (or execute the commands from this file manually on non-Windows machines)
-* navigate to the folder "install_requirements",
-* (if using RStudio) open the files  "install_requirements.RProj" and "install_requirements.R" in this sequence
+
+* In each folder, run the file `.bat` (or execute the commands from this file manually on non-Windows machines)
+* navigate to the folder `install_requirements`,
+* (if using RStudio) open the files  `install_requirements.RProj` and `install_requirements.R` in this sequence
 
 
 ### Obtaining figures and tables 
 
-The results will appear in the folders "main/plots_tables" and "third_party/plots_tables".
+The results will appear in the folders `main/plots_tables` and `third_party/plots_tables`.
 
 To obtain Figures 6-12, 14, Tables 3-4, and the results of the statistical tests, do:
-* navigate to the folder "main",
-* (if using RStudio) open the file "experiments_main.RProj" and all files ".R" in this sequence,
-* "do_experiments.R",
-* "analyze_experiments.R",
-* "plots_and_tables.R".
+* navigate to the folder `main`,
+* (if using RStudio) open the file `experiments_main.RProj` and all files `.R` in this sequence,
+* `do_experiments.R`,
+* `analyze_experiments.R`,
+* `plots_and_tables.R`.
 
-To obtain column "share" of Table 2, execute "dgp_analysis.R"
+To obtain column "share" of Table 2, execute `dgp_analysis.R`
 
 To obtain Table 5 and Figure 13, do:
-* navigate to the folder "third_party",
-* (if using RStudio) open the file "experiments_tp.RProj" and all files ".R" in this sequence,
-* "do_experiments.R",
-* "analyze_experiments.R",
-* "plots_and_tables.R".
+* navigate to the folder `third_party`,
+* (if using RStudio) open the file `experiments_tp.RProj` and all files `.R` in this sequence,
+* `do_experiments.R`,
+* `analyze_experiments.R`,
+* `plots_and_tables.R`.
