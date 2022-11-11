@@ -10,6 +10,7 @@ Management of Data (SIGMOD ’21), June 20–25, 2021, Virtual Event, China.
 ACM, NewYork, NY, USA, 14 pages. https://doi.org/10.1145/3448016.3457301. 
 
 Namely,
+
 1. package "reds_0.14.tar.gz" containing the implementation of REDS, PRIM, and BI algorithms, the quality metrics, and the functions we experiment with. 
 This version corresponds to the commit 12da8bd1b535169975aa686d4bdf4015d3a46563 in the [reds repository](https://github.com/Arzik1987/reds);
 2. files ".R" and "RData" containing the code and data for reproducing all experiments and respective plots and tables presented in the paper;
@@ -40,6 +41,7 @@ For convenience, we recommend using [RStudio](https://www.rstudio.com/products/r
 The results will appear in the folders `main/plots_tables` and `third_party/plots_tables`.
 
 To obtain Figures 6-12, 14, Tables 3-4, and the results of the statistical tests, do:
+
 * navigate to the folder `main`,
 * (if using RStudio) open the file `experiments_main.RProj` and all files `.R` in this sequence,
 * `do_experiments.R`,
@@ -49,6 +51,7 @@ To obtain Figures 6-12, 14, Tables 3-4, and the results of the statistical tests
 To obtain column "share" of Table 2, execute `dgp_analysis.R`
 
 To obtain Table 5 and Figure 13, do:
+
 * navigate to the folder `third_party`,
 * (if using RStudio) open the file `experiments_tp.RProj` and all files `.R` in this sequence,
 * `do_experiments.R`,
